@@ -18,3 +18,8 @@ class Log(BaseModel):
     level: LogLevel
     component: LogComponent
     message: str
+
+class LogStats(BaseModel):
+    total_logs: int
+    log_count_per_level: dict[LogLevel, int]
+    log_count_per_component: dict[LogComponent, int]

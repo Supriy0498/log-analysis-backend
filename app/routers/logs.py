@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from datetime import datetime
 from typing import List, Optional
 
-from schemas.log import Log, LogLevel, LogComponent
+from schemas.log import Log, LogLevel, LogComponent, LogStats
 import services.logs as logs_service
 from type_defs.logs import LogList
 
@@ -18,7 +18,7 @@ def get_logs(
     return logs_service.get_logs(level, component, start_time, end_time)
 
 @logs_router.get("/logs/stats")
-def get_logs_stats():
+def get_logs_stats() -> LogStats:
     return logs_service.get_logs_stats()
 
 @logs_router.get("/logs/{log_id}")

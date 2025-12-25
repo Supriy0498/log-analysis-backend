@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import HTTPException, status
 
 from utils import logs_parser, logs_filter
-from schemas.log import Log, LogLevel, LogComponent
+from schemas.log import Log, LogLevel, LogComponent, LogStats
 from type_defs.logs import LogDict, LogList
 
 _logs: LogDict = {}
@@ -34,7 +34,7 @@ def get_logs(level: Optional[LogLevel] = None,
     return filtered_logs
 
 
-def get_logs_stats():
+def get_logs_stats() -> LogStats:
     total_logs = len(_logs)
     log_count_per_level = dict()
     for level in LogLevel:
@@ -48,11 +48,9 @@ def get_logs_stats():
         log_count_per_level[log.level.name]+=1
         log_count_per_component[log.component.name]+=1
 
-    return {
-        "total_logs": total_logs,
-        "log_count_per_level": log_count_per_level,
-        "log_count_per_component": log_count_per_component
-    }
+    log_stats = LogStats(total_logs=total_logs, log_count_per_level=log_count_per_level, log_count_per_component=log_count_per_component)
+
+    return log_stats
 
 def get_log(log_id) -> Log:
     log = _logs.get(log_id, None)
